@@ -71,9 +71,19 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 ./gradlew :reportingservice:bootRun
 ```
 
+To run on a different port (for example `8081`), use:
+
+```bash
+SERVER_PORT=8081 ./gradlew :reportingservice:bootRun
+```
+
 To validate it is running, open:
 
 http://localhost:8080/swagger-ui/index.html#/
+
+If using `SERVER_PORT=8081`, validate at:
+
+http://localhost:8081/swagger-ui/index.html#/
 
 ## Troubleshooting
 
