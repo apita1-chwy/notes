@@ -85,6 +85,42 @@ If using `SERVER_PORT=8081`, validate at:
 
 http://localhost:8081/swagger-ui/index.html#/
 
+### Run Reporting Service Pointing to Dev/Stg
+
+From `/Users/apita1/repos/aspen-core`, run with environment variables set:
+
+First, login to AWS SSO:
+
+```bash
+aws-sso-util login
+```
+
+When prompted, select the account/profile for your target environment:
+
+- `dev`: `adtech_dev` (`227857097299`)
+- `stg`: `adtech_stg` (`119123756947`)
+
+```bash
+export ENV=dev && export REGION=us-east-1 && SERVER_PORT=8081 ./gradlew :reportingservice:bootRun
+```
+
+```bash
+export ENV=stg && export REGION=us-east-1 && SERVER_PORT=8081 ./gradlew :reportingservice:bootRun
+```
+
+Before calling Reporting APIs, get a Bearer token from the Auth API in the same environment (`dev` or `stg`) and use that token in the `Authorization: Bearer <token>` header.
+
+Example flow:
+
+```bash
+# Set this to the auth host for the same ENV (dev or stg)
+export AUTH_BASE_URL=https://<auth-host>
+
+curl -X POST "$AUTH_BASE_URL/<auth-token-endpoint>" \
+  -H "Content-Type: application/json" \
+  -d '{"clientId":"<client-id>","clientSecret":"<client-secret>"}'
+```
+
 ## Troubleshooting
 
 If you see “unable to instantiate bean” errors in Aspen Core, clean IntelliJ cache:
